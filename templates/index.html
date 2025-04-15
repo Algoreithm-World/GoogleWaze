@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Assistant</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Accessibility Preference Modal -->
+    <div class="modal fade" id="accessibilityModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accessibilityModalLabel">Accessibility Preferences</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="screenReaderOption">
+                        <label class="form-check-label" for="screenReaderOption">Enable Screen Reader Assistance</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="highContrastOption">
+                        <label class="form-check-label" for="highContrastOption">High Contrast Mode</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="darkModeOption">
+                        <label class="form-check-label" for="darkModeOption">Dark Mode</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="textSizeRange" class="form-label">Text Size</label>
+                        <input type="range" class="form-range" min="100" max="200" value="100" id="textSizeRange">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="savePreferences">Save Preferences</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-universal-access me-2"></i>
+                Accessibility Assistant
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#text-to-speech" id="text-to-speech-tab">
+                            <i class="fas fa-volume-up me-1"></i> Text to Speech
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#speech-to-text" id="speech-to-text-tab">
+                            <i class="fas fa-microphone me-1"></i> Speech to Text
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dyslexic-text" id="dyslexic-text-tab">
+                            <i class="fas fa-font me-1"></i> Dyslexic-Friendly Text
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#image-description" id="image-description-tab">
+                            <i class="fas fa-image me-1"></i> Image Description
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-secondary me-2" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#accessibilityModal">
+                        <i class="fas fa-cog me-1"></i> Accessibility Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tab-content" id="myTabContent">
+            <!-- Home Tab -->
+            <section class="tab-pane fade show active" id="home">
+                <div class="px-4 py-5 my-5 text-center">
+                    <h1 class="display-5 fw-bold text-body-emphasis">Accessibility Assistant</h1>
+                    <div class="col-lg-8 mx-auto">
+                        <p class="lead mb-4">
+                            Tools to make digital content more accessible for everyone, including those with disabilities
+                            such as dyslexia, vision impairment, or hearing impairment.
+                        </p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                            <a href="#text-to-speech" class="btn btn-primary btn-lg px-4 gap-3" id="start-button">
+                                <i class="fas fa-volume-up me-2"></i>Start Using Tools
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container px-4 py-5" id="featured-tools">
+                    <h2 class="pb-2 border-bottom">Featured Tools</h2>
+                    <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
+                        <div class="col d-flex align-items-start">
+                            <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded-circle">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h3 class="fs-4">Text to Speech</h3>
+                                <p>Convert written text into spoken words, making content accessible for those with visual impairments or reading difficulties.</p>
+                                <a href="#text-to-speech" class="btn btn-primary feature-button">
+                                    Use Tool
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col d-flex align-items-start">
+                            <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded-circle">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h3 class="fs-4">Speech to Text</h3>
+                                <p>Convert spoken words into written text, enabling hands-free typing and note-taking.</p>
+                                <a href="#speech-to-text" class="btn btn-primary feature-button">
+                                    Use Tool
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col d-flex align-items-start">
+                            <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded-circle">
+                                <i class="fas fa-font"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h3 class="fs-4">Dyslexic-Friendly Text</h3>
+                                <p>Format text with dyslexic-friendly fonts, spacing, and colors to improve readability.</p>
+                                <a href="#dyslexic-text" class="btn btn-primary feature-button">
+                                    Use Tool
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col d-flex align-items-start">
+                            <div class="feature-icon-wrapper d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3 rounded-circle">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h3 class="fs-4">Image Description</h3>
+                                <p>Upload images to get AI-generated descriptions that can be read aloud, making visual content accessible.</p>
+                                <a href="#image-description" class="btn btn-primary feature-button">
+                                    Use Tool
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Text to Speech Tab -->
+            <section class="tab-pane fade" id="text-to-speech">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0"><i class="fas fa-volume-up me-2"></i>Text to Speech</h2>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text mb-4">Enter text below and click the play button to convert it to speech. You can adjust the voice, rate, and pitch using the controls.</p>
+
+                                <div class="mb-3">
+                                    <label for="textInput" class="form-label">Text to Convert</label>
+                                    <textarea class="form-control" id="textInput" rows="6" placeholder="Enter text here..."></textarea>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="voiceSelect" class="form-label">Voice</label>
+                                        <select class="form-select" id="voiceSelect">
+                                            <option value="">Loading voices...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="rateRange" class="form-label">Speed: <span id="rateValue">1</span></label>
+                                        <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="rateRange">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="pitchRange" class="form-label">Pitch: <span id="pitchValue">1</span></label>
+                                        <input type="range" class="form-range" min="0.5" max="2" step="0.1" value="1" id="pitchRange">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-center mt-4">
+                                    <div class="btn-group" role="group" aria-label="TTS Controls">
+                                        <button type="button" class="btn btn-primary btn-lg" id="playButton">
+                                            <i class="fas fa-play me-2"></i>Play
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-lg" id="pauseButton">
+                                            <i class="fas fa-pause me-2"></i>Pause
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-lg" id="stopButton">
+                                            <i class="fas fa-stop me-2"></i>Stop
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="form-label">Sample Text</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-outline-secondary sample-text" data-text="Hello, my name is Accessibility Assistant. I'm here to help make content more accessible.">Greeting</button>
+                                        <button class="btn btn-outline-secondary sample-text" data-text="The quick brown fox jumps over the lazy dog. This sentence contains all the letters in the English alphabet.">Pangram</button>
+                                        <button class="btn btn-outline-secondary sample-text" data-text="According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.">Bee Movie</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Speech to Text Tab -->
+            <section class="tab-pane fade" id="speech-to-text">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0"><i class="fas fa-microphone me-2"></i>Speech to Text</h2>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text mb-4">Click the microphone button and start speaking. Your words will be converted to text. You can pause and resume as needed.</p>
+
+                                <div class="mb-3">
+                                    <label for="transcript" class="form-label">Transcript</label>
+                                    <div class="position-relative">
+                                        <textarea class="form-control" id="transcript" rows="10" placeholder="Your transcribed text will appear here..." readonly></textarea>
+                                        <div id="status-indicator" class="position-absolute top-0 end-0 mt-2 me-2 d-none">
+                                            <div class="spinner-grow text-primary" role="status">
+                                                <span class="visually-hidden">Listening...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-select" id="languageSelect">
+                                        <option value="en-US">English (US)</option>
+                                        <option value="en-GB">English (UK)</option>
+                                        <option value="es-ES">Spanish</option>
+                                        <option value="fr-FR">French</option>
+                                        <option value="de-DE">German</option>
+                                        <option value="it-IT">Italian</option>
+                                        <option value="ja-JP">Japanese</option>
+                                        <option value="ko-KR">Korean</option>
+                                        <option value="pt-BR">Portuguese (Brazil)</option>
+                                        <option value="ru-RU">Russian</option>
+                                        <option value="zh-CN">Chinese (Simplified)</option>
+                                    </select>
+                                </div>
+
+                                <div class="d-flex justify-content-center mt-4">
+                                    <div class="btn-group" role="group" aria-label="STT Controls">
+                                        <button type="button" class="btn btn-primary btn-lg" id="startButton">
+                                            <i class="fas fa-microphone me-2"></i>Start Recording
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-lg" id="stt-stopButton" disabled>
+                                            <i class="fas fa-stop me-2"></i>Stop
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" class="btn btn-secondary me-2" id="copyButton" disabled>
+                                        <i class="fas fa-copy me-1"></i>Copy
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="clearButton" disabled>
+                                        <i class="fas fa-trash me-1"></i>Clear
+                                    </button>
+                                </div>
+
+                                <div class="alert alert-info mt-4" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Tip:</strong> Speak clearly and at a moderate pace for the best results. You may need to allow microphone access when prompted.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dyslexic-Friendly Text Tab -->
+            <section class="tab-pane fade" id="dyslexic-text">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0"><i class="fas fa-font me-2"></i>Dyslexic-Friendly Text Formatter</h2>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text mb-4">Enter text below or upload a file. Adjust the formatting options to make the text more readable for dyslexic users.</p>
+
+                                <div class="mb-3">
+                                    <label for="inputText" class="form-label">Enter Text</label>
+                                    <textarea class="form-control" id="inputText" rows="6" placeholder="Enter text here or upload a file..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fileUpload" class="form-label">Or Upload a Text File</label>
+                                    <input class="form-control" type="file" id="fileUpload" accept=".txt,.doc,.docx,.pdf">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5 class="mb-3">Text Settings</h5>
+
+                                        <div class="mb-3">
+                                            <label for="fontFamily" class="form-label">Font Family</label>
+                                            <select class="form-select" id="fontFamily">
+                                                <option value="'Lexend', sans-serif">Lexend (Dyslexic-Friendly)</option>
+                                                <option value="'Open Sans', sans-serif">Open Sans</option>
+                                                <option value="Arial, sans-serif">Arial</option>
+                                                <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                                                <option value="'Courier New', monospace">Courier New</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="fontSize" class="form-label">Font Size: <span id="fontSizeValue">16</span>px</label>
+                                            <input type="range" class="form-range" min="12" max="32" step="1" id="fontSize" value="16">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="letterSpacing" class="form-label">Letter Spacing: <span id="letterSpacingValue">0</span>px</label>
+                                            <input type="range" class="form-range" min="0" max="5" step="0.5" id="letterSpacing" value="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <h5 class="mb-3">Color Settings</h5>
+
+                                        <div class="mb-3">
+                                            <label for="textColor" class="form-label">Text Color</label>
+                                            <div class="d-flex">
+                                                <input type="color" class="form-control form-control-color me-2" id="textColor" value="#F8F9FA" title="Choose text color">
+                                                <select class="form-select" id="textColorPreset">
+                                                    <option value="#F8F9FA">Light (Default)</option>
+                                                    <option value="#212529">Dark</option>
+                                                    <option value="#0D6EFD">Blue</option>
+                                                    <option value="#198754">Green</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="backgroundColor" class="form-label">Background Color</label>
+                                            <div class="d-flex">
+                                                <input type="color" class="form-control form-control-color me-2" id="backgroundColor" value="#212529" title="Choose background color">
+                                                <select class="form-select" id="backgroundColorPreset">
+                                                    <option value="#212529">Dark (Default)</option>
+                                                    <option value="#F8F9FA">Light</option>
+                                                    <option value="#F0F0F0">Light Gray</option>
+                                                    <option value="#FFF3CD">Cream</option>
+                                                    <option value="#E8F4F8">Light Blue</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="lineHeight" class="form-label">Line Height: <span id="lineHeightValue">1.5</span></label>
+                                            <input type="range" class="form-range" min="1" max="3" step="0.1" id="lineHeight" value="1.5">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h5>Preview</h5>
+                                    <div id="textPreview" class="p-3 rounded mb-3" style="min-height: 200px; border: 1px solid #495057;">
+                                        <p>Your formatted text will appear here.</p>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-primary" id="applyFormattingBtn">
+                                            <i class="fas fa-magic me-2"></i>Apply Formatting
+                                        </button>
+                                        <div>
+                                            <button type="button" class="btn btn-secondary me-2" id="copyFormattedBtn">
+                                                <i class="fas fa-copy me-1"></i>Copy Text
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" id="readAloudBtn">
+                                                <i class="fas fa-volume-up me-1"></i>Read Aloud
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Description Tab -->
+            <section class="tab-pane fade" id="image-description">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0"><i class="fas fa-image me-2"></i>Image Description</h2>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text mb-4">Upload an image to get an AI-generated description. The description can be read aloud to make visual content accessible.</p>
+
+                                <div class="mb-4">
+                                    <div id="uploadContainer" class="image-upload-container text-center p-4 border rounded">
+                                        <div id="dropZone" class="drop-zone mb-3">
+                                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                            <p>Drag and drop an image here or click to select</p>
+                                            <input type="file" id="imageUpload" accept="image/*" class="d-none">
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="browseButton">
+                                            <i class="fas fa-folder-open me-2"></i>Browse Images
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="resultContainer" class="d-none">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="image-preview-container">
+                                                <img id="imagePreview" class="img-fluid rounded" alt="Uploaded image preview">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="description-container">
+                                                <h5 class="mb-3">Image Description</h5>
+                                                <div id="loadingDescription" class="d-none">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="spinner-border text-primary me-2" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                        <span>Analyzing image...</span>
+                                                    </div>
+                                                </div>
+                                                <div id="descriptionBox" class="p-3 rounded mb-3" style="min-height: 200px;">
+                                                    <p id="descriptionText"></p>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="button" class="btn btn-primary" id="readDescriptionBtn">
+                                                        <i class="fas fa-volume-up me-2"></i>Read Description
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary" id="copyDescriptionBtn">
+                                                        <i class="fas fa-copy me-2"></i>Copy Description
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 text-center">
+                                        <button type="button" class="btn btn-outline-secondary" id="uploadNewBtn">
+                                            <i class="fas fa-arrow-left me-2"></i>Upload New Image
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-4" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Note:</strong> Image descriptions are generated by AI and may not be 100% accurate. The descriptions aim to convey the key elements and context of the image.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 Accessibility Assistant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
